@@ -1,4 +1,4 @@
-import requests
+import requests, os, zipfile, io
 
 download_uris = [
     'https://divvy-tripdata.s3.amazonaws.com/Divvy_Trips_2018_Q4.zip',
@@ -13,6 +13,20 @@ download_uris = [
 
 def main():
     # your code here
+    cwd = os.getcwd()
+    directory =  cwd + "/downloads"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+
+    for i in download_uris:
+        filename = requests.get(i)
+        if filename.status_code == 200:
+            z = zipfile.ZipFile(io.BytesIO(filename.content))
+            z.extractall(directory)
+            print("200")
+    return("Finished")
+
     pass
 
 
